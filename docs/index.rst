@@ -226,6 +226,7 @@ ELKの実行
 起動したELKのコンテナでbashを開く
 
 ::
+
    docker exec -it f5-waf-elk-dashboards_elasticsearch_1 /bin/bash
    
    root@3b5bb60d2d35:/#
@@ -233,6 +234,7 @@ ELKの実行
 Pluginを設定する(ELKのbash上で行う)
 
 ::
+
    # logstash の停止
    service logstash stop
    # logstash pluginのinstall
@@ -246,12 +248,14 @@ Pluginを設定する(ELKのbash上で行う)
 logstashの設定ファイルが配置されていることを確認します。
 
 ::
+
    cat /etc/logstash/conf.d/apdos-logstash.conf
 
 ファイルが存在しない場合、一度コンテナのbashから抜け、ターミナルからファイルを読み込みます
 その他エラーについては `こちらの手順を参照してください <https://github.com/f5devcentral/nap-dos-elk-dashboards#deploying-elk-stack>`__
 
 ::
+
    # コンテナのbashから抜ける
    root@3b5bb60d2d35:/# exit
 
@@ -266,6 +270,7 @@ logstashの設定ファイルが配置されていることを確認します。
 正しく追加されたことを確認
 
 ::
+
    # cd ~/nap-dos-elk-dashboards
    curl -s -XGET "http://localhost:9200/_cat/indices" | grep app-protect
    ※実行結果サンプル
@@ -274,12 +279,14 @@ logstashの設定ファイルが配置されていることを確認します。
 Geo Fieldの更新
 
 ::
+
    # cd ~/nap-dos-elk-dashboards
    curl -XPOST "http://localhost:9200/app-protect-dos-logs/_mapping"  -H "Content-Type: application/json" -d  @apdos_geo_mapping.json
 
 App Protect DoS の DashboardをImport
 
 ::
+
    # cd ~/nap-dos-elk-dashboards
    KIBANA_CONTAINER_URL=http://localhost:5601
    jq -s . kibana/apdos-dashboard.ndjson | jq '{"objects": . }' | \
@@ -291,6 +298,7 @@ App Protect DoS の DashboardをImport
 App Protect WAF のDashboardをImport
 
 ::
+
    cd ~/f5-waf-elk-dashboards
    jq -s . kibana/false-positives-dashboards.ndjson | jq '{"objects": . }' | curl -k --location --request POST "$KIBANA_CONTAINER_URL/api/kibana/dashboards/import"     --header 'kbn-xsrf: true'     --header 'Content-Type: text/plain' -d @-     | jq
    jq -s . kibana/overview-dashboard.ndjson | jq '{"objects": . }' | curl -k --location --request POST "$KIBANA_CONTAINER_URL/api/kibana/dashboards/import"     --header 'kbn-xsrf: true'     --header 'Content-Type: text/plain' -d @-     | jq
@@ -298,11 +306,13 @@ App Protect WAF のDashboardをImport
 再度ELKのbashを開く
 
 ::
+
    docker exec -it f5-waf-elk-dashboards_elasticsearch_1 /bin/bash
 
 logstashを起動
 
 ::
+
    # 起動
    service logstash start
 
@@ -339,3 +349,5 @@ ELKは起動に時間がかかります。以下のコマンドを実行し想�
    一定時間経過して状況が改善しない場合、再度docker-composeを実行してください
    docker-compose -f docker-compose.yaml down
    docker-compose -f docker-compose.yaml up -d
+
+ブラウザからELKを開き、Menu > Kibana > Dashboardで正しく3つのDashboardが見えることを確認する
