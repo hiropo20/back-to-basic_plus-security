@@ -1,0 +1,31 @@
+{
+    "policy":
+    {
+        "name": "disable-sqli-signatures",
+        "template": { "name": "POLICY_TEMPLATE_NGINX_BASE" },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "signatures": [
+            {
+                "signatureId": 200002147,
+                "enabled": false
+            },
+            {
+                "signatureId": 200002419,
+                "enabled": false
+            },
+            {
+                "signatureId": 200002883,
+                "enabled": false
+            },
+            {
+                "signatureId": 200002476,
+                "enabled": false
+            },
+            {
+                "signatureId": 200015112,
+                "enabled": false
+            }
+        ]
+    }
+}

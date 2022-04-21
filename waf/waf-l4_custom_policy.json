@@ -1,0 +1,17 @@
+{
+    "policy":
+    {
+        "name": "custom-blockingpage",
+        "template": { "name": "POLICY_TEMPLATE_NGINX_BASE" },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "response-pages": [
+            {
+                "responseContent": "Attack is detected ID: <%TS.request.ID()%>",
+                "responseHeader": "HTTP/1.1 401 UnauthorizedK\r\nCache-Control: no-cache\r\nPragma: no-cache\r\nConnection: close",
+                "responseActionType": "custom",
+                "responsePageType": "default"
+            }
+        ]
+    }
+}

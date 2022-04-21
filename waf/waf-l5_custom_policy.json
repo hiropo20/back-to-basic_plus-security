@@ -1,0 +1,14 @@
+{
+    "policy":
+    {
+        "name": "sensitive-parameter",
+        "template": { "name": "POLICY_TEMPLATE_NGINX_BASE" },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "sensitive-parameters": [
+            {
+                "name": "mypass"
+            }
+        ]
+    }
+}
